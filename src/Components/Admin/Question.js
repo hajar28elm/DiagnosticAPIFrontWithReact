@@ -158,16 +158,16 @@ export function Question(){
         setData(fetchedData);
         setLoading(false);
       }, 2000);
-       // axios.get('/getAllQuestions')
-      // .then((response) => {
-      //   setQuestions(response.data);
-      // })
-      // .catch((error) => {
-      //   console.error('Error fetching questions:', error);
-      // });
+       axios.get('http://127.0.0.1:8000/api/questions')
+      .then((response) => {
+        setQuestions(response.data.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching questions:', error);
+      });
     }, []);
     const deleteQuestion = (id) => {
-      axios.delete(`/api/deleteQuestion/${id}`)
+      axios.delete(`http://127.0.0.1:8000/api/deleteQuestion/${id}`)
         .then(() => {
           setQuestions((prevQuestions) => prevQuestions.filter((question) => question.id !== id));
         })
@@ -204,6 +204,7 @@ export function Question(){
                 <th>Actions</th>
               </tr>
             </thead>
+            {/*
             <tbody>
               {data.map((item) => (
                 <tr key={item.id}>
@@ -218,24 +219,22 @@ export function Question(){
                   </td>
                 </tr>
               ))}
-            </tbody>
-            {/* <tbody>
+              </tbody>*/}
+            { <tbody>
               {questions.map((item) => (
                 <tr key={item.id}>
                   <td>{item.description}</td>
                   <td>{item.category}</td>
                   <td>
                      <div>
-                     <Link className="btn btn-success"  to={`edit/${item.id}`} style={{marginRight:"20px"}}>Edit</Link>
-                     <Link className="btn btn-danger">Delete</Link>
-                     <Routes>
-                         <Route path="edit:id" element={<Edit/>}></Route>
-                     </Routes>
+                     <Link className="btn btn-success"  to={`edit/${item.id}?description=${item.description}&category=${item.category}`} style={{marginRight:"20px"}}>Edit</Link>
+                     <button className="btn btn-danger" onClick={() => deleteQuestion(item.id)}>Delete</button>
+                     <Outlet />
                      </div>
                   </td>
                 </tr>
               ))}
-            </tbody> */}
+            </tbody> }
           </table>
         )}
       </div>
